@@ -2,6 +2,7 @@
 import tkinter as tk
 import tkinter.ttk as ttk
 import collections
+from data import *
 
 root = tk.Tk()
 root.geometry("925x600")
@@ -27,7 +28,7 @@ def window_employee():
 
     comboSenior = tk.ttk.Combobox(win1, values=["Y", "N"], width=22)
     comboSenior.grid(row=2, column=1)
-    comboEvent = tk.ttk.Combobox(win1, values=["Art", "Theatre", "Music", "Reception"], width=22)
+    comboEvent = tk.ttk.Combobox(win1, values=["Art", "Music", "Theater", "Reception", "Dance", "No Preference"], width=22)
     comboEvent.grid(row=4, column=1)
 
 def window_calendar():

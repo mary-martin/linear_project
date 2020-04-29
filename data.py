@@ -48,4 +48,4 @@ def get_employee_list():
 
 def get_event_list():
     event_list = db.get_collection(client.event)
-    print("Event list: ", event_list)
+    print("Event list: ", event_list)che  
