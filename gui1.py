@@ -8,32 +8,46 @@ from data import *
 #        FUNCTIONS
 #===========================
 
+
 # add_employee window
+
 def window_employee():
+
     win1 = tk.Toplevel(root)
     win1.geometry("925x600+20+20")
     win1['bg']="#B8BBC5"
     title = tk.Label(win1, text="Add an employee",pady=50, bg="#B8BBC5")
     title.grid(row=0, column=3)
-    fill_list = ["Name: ","Senior Staff: ","Unavailable Hours: ","Preferred event type: "]
-    nrow = 0
-    for i in range(len(fill_list)):
-        tk.Label(win1, text=fill_list[i], anchor="e", width=20).grid(row=nrow+1, column=0)
+
+    title = tk.Label(win1, text="Add an Employee: ", bg="#B8BBC5")
+    name = tk.Label(win1, text="Name: ", bg="#B8BBC5")
+    senior = tk.Label(win1, text="Senior Staff: ", bg="#B8BBC5")
+    unavailable = tk.Label(win1, text="Unavailable Hours: ", bg="#B8BBC5")
+    pref_event = tk.Label(win1, text="Preferred Event Type: ", bg="#B8BBC5")
+    fields = [name, senior, unavailable, pref_event]
+
+    nrow = 1
+    for field in fields: 
+        field.grid(row=nrow, column = 0)
         nrow += 1
 
-    tk.Entry(win1, width=22).grid(row=1, column=1)
+    name_field = tk.Entry(win1, width=22).grid(row=1, column=1)
     availability_btn = tk.Button(win1, text="Choose Unavailability")
     availability_btn.config(width=22)
     availability_btn.grid(row=3, column=1)
     availability_btn['command']= window_calendar
 
-    comboSenior = tk.ttk.Combobox(win1, values=["Y", "N"], width=22)
+    senior_field = comboSenior = tk.ttk.Combobox(win1, values=["Y", "N"], width=22)
     comboSenior.grid(row=2, column=1)
-    comboEvent = tk.ttk.Combobox(win1, values=["Art", "Music", "Theater", "Reception", "Dance", "No Preference"], width=22)
+    pref_field = comboEvent = tk.ttk.Combobox(win1, values=["Art", "Music", "Theater", "Reception", "Dance", "No Preference"], width=22)
     comboEvent.grid(row=4, column=1)
 
-    submit = tk.Button(win1, text="Submit", fg="Black", bg="Red", command=insert) 
+    submit = tk.Button(win1, text="Submit", command=submit_employee) 
     submit.grid(row=5, column=1) 
+
+def submit_employee():
+    return 
+
 
 # create calendar window 
 def window_calendar():
