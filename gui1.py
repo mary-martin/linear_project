@@ -46,8 +46,7 @@ def window_employee():
     submit.grid(row=5, column=1) 
 
 def submit_employee():
-    return 
-
+    print(name_field.get())
 
 # create calendar window 
 def window_calendar():
@@ -163,49 +162,50 @@ def window_staff():
     title.pack()
 
 #==========================
-#      MAIN LOOP
+#      MAIN INTERFACE
 #==========================
 
-root = tk.Tk()
-root.geometry("925x600")
+if __name__ == "__main__":
+    root = tk.Tk()
+    root.geometry("925x600")
 
-# create label widge
-welcome_label = tk.Label(text = "Employee Schedule System", pady=50, bg="#B8BBC5")
-blank1 = tk.Label(text = "Employee Schedule System", pady=50, fg="#B8BBC5", bg="#B8BBC5")
-blank2 = tk.Label(text = "Employee Schedule System", pady=50, fg="#B8BBC5", bg="#B8BBC5")
-blank3 = tk.Label(text = "Employee Schedule System", pady=50, fg="#B8BBC5", bg="#B8BBC5")
-blank4 = tk.Label(text = "Employee Schedule System", pady=50, fg="#B8BBC5", bg="#B8BBC5")
- 
-# create buttons
-add_employee_btn = tk.Button(text="Add an Employee", height = 6)
-add_event_btn = tk.Button(text="Add an Event", height = 6)
-staff_event_btn = tk.Button(text="Staff an Event", height = 6)
-create_schedule_btn = tk.Button(text="Create Weekly Schedule", height = 6)
-export_schedule_btn = tk.Button(text="Export Weekly Schedule", height = 6)
+    # create label widge
+    welcome_label = tk.Label(text = "Employee Schedule System", pady=50, bg="#B8BBC5")
+    blank1 = tk.Label(text = "Employee Schedule System", pady=50, fg="#B8BBC5", bg="#B8BBC5")
+    blank2 = tk.Label(text = "Employee Schedule System", pady=50, fg="#B8BBC5", bg="#B8BBC5")
+    blank3 = tk.Label(text = "Employee Schedule System", pady=50, fg="#B8BBC5", bg="#B8BBC5")
+    blank4 = tk.Label(text = "Employee Schedule System", pady=50, fg="#B8BBC5", bg="#B8BBC5")
+    
+    # create buttons
+    add_employee_btn = tk.Button(text="Add an Employee", height = 6)
+    add_event_btn = tk.Button(text="Add an Event", height = 6)
+    staff_event_btn = tk.Button(text="Staff an Event", height = 6)
+    create_schedule_btn = tk.Button(text="Create Weekly Schedule", height = 6)
+    export_schedule_btn = tk.Button(text="Export Weekly Schedule", height = 6)
 
-# change buttons size
-add_employee_btn.config(width=20)
-add_event_btn.config(width=20)
-staff_event_btn.config(width=20)
-create_schedule_btn.config(width=20)
-export_schedule_btn.config(width=20)
+    # change buttons size
+    add_employee_btn.config(width=20)
+    add_event_btn.config(width=20)
+    staff_event_btn.config(width=20)
+    create_schedule_btn.config(width=20)
+    export_schedule_btn.config(width=20)
 
-# layout in the window
-blank1.grid(row=0, column=0)
-blank2.grid(row=0, column=1)
-blank3.grid(row=0, column=3)
-blank4.grid(row=0, column=4)
-welcome_label.grid(row=0, column=2)
-add_employee_btn.grid(row=1, column=0)#, command=win2)
-add_event_btn.grid(row=1, column=1)
-staff_event_btn.grid(row=1, column=2)
-create_schedule_btn.grid(row=1, column=3)
-export_schedule_btn.grid(row=1, column=4)
+    # layout in the window
+    blank1.grid(row=0, column=0)
+    blank2.grid(row=0, column=1)
+    blank3.grid(row=0, column=3)
+    blank4.grid(row=0, column=4)
+    welcome_label.grid(row=0, column=2)
+    add_employee_btn.grid(row=1, column=0)#, command=win2)
+    add_event_btn.grid(row=1, column=1)
+    staff_event_btn.grid(row=1, column=2)
+    create_schedule_btn.grid(row=1, column=3)
+    export_schedule_btn.grid(row=1, column=4)
 
 
-# click functions
-add_employee_btn['command']=window_employee
-add_event_btn['command']=window_event
-staff_event_btn['command']=window_staff
+    # click functions
+    add_employee_btn['command']=window_employee
+    add_event_btn['command']=window_event
+    staff_event_btn['command']=window_staff
 
-root.mainloop()
+    root.mainloop()
