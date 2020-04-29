@@ -6,7 +6,7 @@ db = client.admin
 
 # server status command and results 
 serverStatusResult=db.command("serverStatus")
-pprint(serverStatusResult)
+# pprint(serverStatusResult)
 
 def add_event(name, date, time, duration, evt_type, num_employees):
     db=client.event 
@@ -35,5 +35,4 @@ def add_employee(name, hire_date, can_manage, event_pref, unavailable_hrs):
 
 def change_event_pref(name, pref):
     employee = db.employees.find_one({'name': name})
-    db.employees.update_one({'_id': { $eq: employee.get('_id') } },
-                                    { $set: { 'event_pref': pref } })
+    db.employees.update_one({'_id': { eq: employee.get('_id') } }, { set: { 'event_pref': pref } })
