@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import tkinter as tk
-import tkinter.ttk
+import tkinter.ttk as ttk
+import collections
 from data import * 
 
 root = tk.Tk()
@@ -20,12 +21,99 @@ def window_employee():
         nrow += 1
 
     tk.Entry(win1, width=22).grid(row=1, column=1)
-    tk.Entry(win1, width=22).grid(row=3, column=1)
+    availability_btn = tk.Button(win1, text="Choose Unavailability")
+    availability_btn.config(width=22)
+    availability_btn.grid(row=3, column=1)
+    availability_btn['command']= window_calendar
 
     comboSenior = tk.ttk.Combobox(win1, values=["Y", "N"], width=22)
     comboSenior.grid(row=2, column=1)
-    comboEvent = tk.ttk.Combobox(win1, values=["Day Shifts", "Night Shifts", "Over-night Shifts", "Flexible"], width=22)
+    comboEvent = tk.ttk.Combobox(win1, values=["Art", "Music", "Theater", "Reception", "Dance", "No Preference"], width=22)
     comboEvent.grid(row=4, column=1)
+
+def window_calendar():
+    win_calendar = tk.Toplevel(root)
+    win_calendar.geometry("625x380+20+20")
+    win_calendar["bg"] = "#B8BBC5"
+    title = tk.Label(win_calendar, text="Choose Unavailability", bg="#B8BBC5",pady=50)
+    title.grid(row = 0, column = 0)
+    calendar = Unavailable_hour(win_calendar)
+    calendar.grid(row = 1, column = 0)
+
+
+# available selection window
+class Unavailable_hour(tk.Frame):
+    def __init__(self, parent, *args, **kwargs):
+        ttk.Frame.__init__(self, parent, *args, **kwargs)
+        self.tree = ttk.Treeview(parent, columns=("size", "modified"))
+        self.tree["columns"] = ("Sunday","Monday", "Tuesday", "Wednesday","Thursday","Friday","Saturday")
+
+        self.tree.column("Sunday", width=60)
+        self.tree.column("Monday", width=60)
+        self.tree.column("Tuesday", width=60)
+        self.tree.column("Wednesday", width=60)
+        self.tree.column("Thursday", width=60)
+        self.tree.column("Friday", width=60)
+        self.tree.column("Saturday", width=60)
+
+        self.tree.heading("Sunday", text="Sunday")
+        self.tree.heading("Monday", text="Monday")
+        self.tree.heading("Tuesday", text="Tuesday")
+        self.tree.heading("Wednesday", text="Wednesday")
+        self.tree.heading("Thursday", text="Thursday")
+        self.tree.heading("Friday", text="Friday")
+        self.tree.heading("Saturday", text="Saturday")
+        self.tree.bind('<ButtonRelease-1>', self.selectItem)
+        self.selectedDict = collections.defaultdict(list)
+
+        self.tree.insert("","end",text = "6-8 AM",values = ("  ","  ","  ","  ","  ","  ","  "),tags = ('odd'))
+        self.tree.insert("","end",text = "8-10 AM",values = ("  ","  ","  ","  ","  ","  ","  "),tags = ('even'))
+        self.tree.insert("","end",text = "10-12 PM",values = ("  ","  ","  ","  ","  ","  ","  "),tags = ('odd'))
+        self.tree.insert("","end",text = "12-2 PM",values = ("  ","  ","  ","  ","  ","  ","  "),tags = ('even'))
+        self.tree.insert("","end",text = "2-4 PM",values = ("  ","  ","  ","  ","  ","  ","  "),tags = ('odd'))
+        self.tree.insert("","end",text = "4-6 PM",values = ("  ","  ","  ","  ","  ","  ","  "),tags = ('even'))
+        self.tree.insert("","end",text = "6-8 PM",values = ("  ","  ","  ","  ","  ","  ","  "),tags = ('odd'))
+        self.tree.insert("","end",text = "8-10 PM",values = ("  ","  ","  ","  ","  ","  ","  "),tags = ('even'))
+        self.tree.insert("","end",text = "10-12 AM",values = ("  ","  ","  ","  ","  ","  ","  "),tags = ('odd'))
+        self.tree.insert("","end",text = "12-2 AM",values = ("  ","  ","  ","  ","  ","  ","  "),tags = ('even'))
+        self.tree.insert("","end",text = "2-4 AM",values = ("  ","  ","  ","  ","  ","  ","  "),tags = ('odd'))
+        self.tree.insert("","end",text = "4-6 AM",values = ("  ","  ","  ","  ","  ","  ","  "),tags = ('even'))
+        # self.tree.tag_configure('oddrow', background='steelblue')
+        self.tree.tag_configure('even', background='lightsteelblue')
+        self.tree.grid()
+
+
+    def selectItem(self, event):
+        curItem = self.tree.item(self.tree.focus())
+        col = self.tree.identify_column(event.x)
+        print ('curItem = ', curItem)
+        print ('col = ', col)
+
+        col_i = int(col[1])-1
+        # print("aaaaaaaaaaa", self.tree["columns"][col_i])
+        if curItem["text"] not in self.selectedDict[self.tree["columns"][col_i]]:
+            self.selectedDict[self.tree["columns"][col_i]].append(curItem["text"])
+        else:
+            print("slot has already selected")
+
+        if col == '#0':
+            cell_value = curItem['text']
+        elif col == '#1':
+            cell_value = curItem['text'] + " selected"
+        elif col == '#2':
+            cell_value = curItem['text'] + " selected"
+        elif col == '#3':
+            cell_value = curItem['text'] + " selected"
+        elif col == '#4':
+            cell_value = curItem['text'] + " selected"
+        elif col == '#5':
+            cell_value = curItem['text'] + " selected"
+        elif col == '#6':
+            cell_value = curItem['text'] + " selected"
+        elif col == '#7':
+            cell_value = curItem['text'] + " selected"
+        print ('cell_value = ', cell_value)
+        print(self.selectedDict)
 
 # add_event window 
 def window_event():
