@@ -4,8 +4,9 @@ import tkinter.ttk as ttk
 import collections
 from data import * 
 
-root = tk.Tk()
-root.geometry("925x600")
+#===========================
+#        FUNCTIONS
+#===========================
 
 # add_employee window
 def window_employee():
@@ -31,6 +32,10 @@ def window_employee():
     comboEvent = tk.ttk.Combobox(win1, values=["Art", "Music", "Theater", "Reception", "Dance", "No Preference"], width=22)
     comboEvent.grid(row=4, column=1)
 
+    submit = tk.Button(win1, text="Submit", fg="Black", bg="Red", command=insert) 
+    submit.grid(row=5, column=1) 
+
+# create calendar window 
 def window_calendar():
     win_calendar = tk.Toplevel(root)
     win_calendar.geometry("625x380+20+20")
@@ -142,6 +147,13 @@ def window_staff():
     win3["bg"] = "#B8BBC5"
     title = tk.Label(win3, text="Staff an Event", bg="#B8BBC5",pady=50)
     title.pack()
+
+#==========================
+#      MAIN LOOP
+#==========================
+
+root = tk.Tk()
+root.geometry("925x600")
 
 # create label widge
 welcome_label = tk.Label(text = "Employee Schedule System", pady=50, bg="#B8BBC5")
