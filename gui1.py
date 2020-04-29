@@ -2,7 +2,6 @@
 import tkinter as tk
 import tkinter.ttk as ttk
 import collections
-from data import * 
 
 root = tk.Tk()
 root.geometry("925x600")
@@ -28,92 +27,96 @@ def window_employee():
 
     comboSenior = tk.ttk.Combobox(win1, values=["Y", "N"], width=22)
     comboSenior.grid(row=2, column=1)
-    comboEvent = tk.ttk.Combobox(win1, values=["Art", "Music", "Theater", "Reception", "Dance", "No Preference"], width=22)
+    comboEvent = tk.ttk.Combobox(win1, values=["Art", "Theatre", "Music", "Reception"], width=22)
     comboEvent.grid(row=4, column=1)
 
 def window_calendar():
     win_calendar = tk.Toplevel(root)
-    win_calendar.geometry("625x380+20+20")
+    win_calendar.geometry("560x450+20+20")
     win_calendar["bg"] = "#B8BBC5"
-    title = tk.Label(win_calendar, text="Choose Unavailability", bg="#B8BBC5",pady=50)
+    title = tk.Label(win_calendar, text="Unavailability", bg="#B8BBC5",pady=50)
     title.grid(row = 0, column = 0)
-    calendar = Unavailable_hour(win_calendar)
-    calendar.grid(row = 1, column = 0)
+    calendar = CheckGrid(win_calendar, rows=12, columns=7)
+    done_btn = tk.Button(win_calendar, text="Update", command = calendar.get_checked())
+    done_btn.grid(row=13, column=7)
+    
+
+class CheckGrid(object):
+    ''' A grid of Checkbuttons '''
+    def __init__(self, parent, rows, columns):
+
+        rowrange = range(rows)
+        colrange = range(columns)
+
+        self.data = collections.defaultdict(list)
+        self.colT = ["Sunday","Monday", "Tuesday", "Wednesday","Thursday","Friday","Saturday"]
+        self.rowT = ["6-8 AM","8-10 AM","10-12 PM","12-2 PM","2-4 PM","4-6 PM","6-8 PM","8-10 PM","10-12 AM","12-2 AM","2-4 AM","4-6 AM"]
+
+        #Create the grid labels
+        for x in colrange:
+            w = tk.Label(parent, text=self.colT[x])
+            w.grid(row=0, column=x+1)
+
+        for y in rowrange:
+            w = tk.Label(parent, text=self.rowT[y])
+            w.grid(row=y+1, column=0)
+
+        #Create the Checkbuttons & save them for future reference
+        self.grid = []
+        for y in rowrange:
+            row = []
+            for x in colrange:
+                b = tk.Checkbutton(parent)
+
+                #Store the button's position and value as attributes
+                b.pos = (y, x)
+                b.var = tk.IntVar()
+
+                #Create a callback bound to this button
+                func = lambda w=b: self.check_cb(w)
+                b.config(variable=b.var, command=func)
+                b.grid(row=y+1, column=x+1)
+                row.append(b)
+            self.grid.append(row)
+        # self.get_checked()
+
+        #Track the number of on buttons in each row
+        self.rowstate = rows * [0]
 
 
-# available selection window
-class Unavailable_hour(tk.Frame):
-    def __init__(self, parent, *args, **kwargs):
-        ttk.Frame.__init__(self, parent, *args, **kwargs)
-        self.tree = ttk.Treeview(parent, columns=("size", "modified"))
-        self.tree["columns"] = ("Sunday","Monday", "Tuesday", "Wednesday","Thursday","Friday","Saturday")
+    def check_cb(self, button):
+        ''' Checkbutton callback '''
+        state = button.var.get()
+        y, x = button.pos
 
-        self.tree.column("Sunday", width=60)
-        self.tree.column("Monday", width=60)
-        self.tree.column("Tuesday", width=60)
-        self.tree.column("Wednesday", width=60)
-        self.tree.column("Thursday", width=60)
-        self.tree.column("Friday", width=60)
-        self.tree.column("Saturday", width=60)
+        #Get the row containing this button
+        row = self.grid[y]
 
-        self.tree.heading("Sunday", text="Sunday")
-        self.tree.heading("Monday", text="Monday")
-        self.tree.heading("Tuesday", text="Tuesday")
-        self.tree.heading("Wednesday", text="Wednesday")
-        self.tree.heading("Thursday", text="Thursday")
-        self.tree.heading("Friday", text="Friday")
-        self.tree.heading("Saturday", text="Saturday")
-        self.tree.bind('<ButtonRelease-1>', self.selectItem)
-        self.selectedDict = collections.defaultdict(list)
-
-        self.tree.insert("","end",text = "6-8 AM",values = ("  ","  ","  ","  ","  ","  ","  "),tags = ('odd'))
-        self.tree.insert("","end",text = "8-10 AM",values = ("  ","  ","  ","  ","  ","  ","  "),tags = ('even'))
-        self.tree.insert("","end",text = "10-12 PM",values = ("  ","  ","  ","  ","  ","  ","  "),tags = ('odd'))
-        self.tree.insert("","end",text = "12-2 PM",values = ("  ","  ","  ","  ","  ","  ","  "),tags = ('even'))
-        self.tree.insert("","end",text = "2-4 PM",values = ("  ","  ","  ","  ","  ","  ","  "),tags = ('odd'))
-        self.tree.insert("","end",text = "4-6 PM",values = ("  ","  ","  ","  ","  ","  ","  "),tags = ('even'))
-        self.tree.insert("","end",text = "6-8 PM",values = ("  ","  ","  ","  ","  ","  ","  "),tags = ('odd'))
-        self.tree.insert("","end",text = "8-10 PM",values = ("  ","  ","  ","  ","  ","  ","  "),tags = ('even'))
-        self.tree.insert("","end",text = "10-12 AM",values = ("  ","  ","  ","  ","  ","  ","  "),tags = ('odd'))
-        self.tree.insert("","end",text = "12-2 AM",values = ("  ","  ","  ","  ","  ","  ","  "),tags = ('even'))
-        self.tree.insert("","end",text = "2-4 AM",values = ("  ","  ","  ","  ","  ","  ","  "),tags = ('odd'))
-        self.tree.insert("","end",text = "4-6 AM",values = ("  ","  ","  ","  ","  ","  ","  "),tags = ('even'))
-        # self.tree.tag_configure('oddrow', background='steelblue')
-        self.tree.tag_configure('even', background='lightsteelblue')
-        self.tree.grid()
-
-
-    def selectItem(self, event):
-        curItem = self.tree.item(self.tree.focus())
-        col = self.tree.identify_column(event.x)
-        print ('curItem = ', curItem)
-        print ('col = ', col)
-
-        col_i = int(col[1])-1
-        # print("aaaaaaaaaaa", self.tree["columns"][col_i])
-        if curItem["text"] not in self.selectedDict[self.tree["columns"][col_i]]:
-            self.selectedDict[self.tree["columns"][col_i]].append(curItem["text"])
+        if state == 1:
+            self.rowstate[y] += 1 
+            for b in row:
+                if b.var.get() == 0:
+                    b.config(state=tk.NORMAL)
         else:
-            print("slot has already selected")
+            self.rowstate[y] -= 1 
+            if self.rowstate[y] == 1:
+                #Enable all currently off buttons in this row
+                for b in row:
+                    if b.var.get() == 0:
+                        b.config(state=tk.NORMAL)
+        self.get_checked()
 
-        if col == '#0':
-            cell_value = curItem['text']
-        elif col == '#1':
-            cell_value = curItem['text'] + " selected"
-        elif col == '#2':
-            cell_value = curItem['text'] + " selected"
-        elif col == '#3':
-            cell_value = curItem['text'] + " selected"
-        elif col == '#4':
-            cell_value = curItem['text'] + " selected"
-        elif col == '#5':
-            cell_value = curItem['text'] + " selected"
-        elif col == '#6':
-            cell_value = curItem['text'] + " selected"
-        elif col == '#7':
-            cell_value = curItem['text'] + " selected"
-        print ('cell_value = ', cell_value)
-        print(self.selectedDict)
+        #print y, x, state, self.rowstate[y] 
+
+    def get_checked(self):
+        ''' Make a list of the selected Groups in each row'''
+        
+        for row in self.grid:
+            for x,b in enumerate(row):
+                if b.var.get() == 1 and self.rowT[x] not in self.data[self.colT[x]]:
+                    self.data[self.colT[x]].append(self.rowT[x])
+        print(self.data)
+        return self.data
 
 # add_event window 
 def window_event():
