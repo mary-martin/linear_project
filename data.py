@@ -36,3 +36,16 @@ def add_employee(name, hire_date, can_manage, event_pref, unavailable_hrs):
 def change_event_pref(name, pref):
     employee = db.employees.find_one({'name': name})
     db.employees.update_one({'_id': { eq: employee.get('_id') } }, { set: { 'event_pref': pref } })
+
+def get_employee_list():
+    db=client.employee
+    listing = db.command('usersInfo')
+
+    for document in listing['users']:
+        print(document['user'] +" "+ document['roles'][0]['role'])
+    # employee_list = db.get_collection(client.employee)
+    # print("Employee list: ", employee_list)
+
+def get_event_list():
+    event_list = db.get_collection(client.event)
+    print("Event list: ", event_list)
