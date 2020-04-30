@@ -13,10 +13,17 @@ def schedule_week(week_of):
     employees = db.get_employee_list()
     num_employees = event['num_employees']
 
+    week = [False] * 12 * 7
+    print(week)
+
     # 2 hr intervals starting at 6 am
     # event intervals
     for event in events:
-        
+        time = event['time']
+        start_hours = int(time[0:2])
+        duration = int(event['duration']).ceil()
+        end_hours = start_hours + duration
+
 
      
     
