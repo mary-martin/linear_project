@@ -70,6 +70,7 @@ def get_event_list():
     
     event_list = list(db.Events.find({}))
     print("Event list: ", event_list)
+    return event_list
 
 def get_employee_count():
    
