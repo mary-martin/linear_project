@@ -5,7 +5,7 @@ import collections
 # from data import *
 
 root = tk.Tk()
-root.geometry("925x600")
+root.geometry("1000x600")
 
 ###############################
 #     Add Employee Window
@@ -14,8 +14,7 @@ class Window_employee():
     def __init__(self):
         win1 = tk.Toplevel(root)
         win1.geometry("925x600+20+20")
-        win1['bg']="#B8BBC5"
-        title = tk.Label(win1, text="Add an employee",pady=50, bg="#B8BBC5")
+        title = tk.Label(win1, text="Add an employee",pady=50, bg="#B8BBC5",font=("Helvetica", 16),width = 920)
         title.pack()
         # fill_list = ["Name: ","Senior Staff: ","Unavailable Hours: ","Preferred event type: "]
         # nrow = 0
@@ -23,22 +22,25 @@ class Window_employee():
         #     tk.Label(win1, text=fill_list[i], anchor="e", width=20).grid(row=nrow+1, column=0)
         #     nrow += 1
 
+        tk.Label(win1, text="Name").pack()
         self.name_entry = tk.Entry(win1, width = 22)
-        self.name_entry.insert(0, "Name")
+        self.name_entry.insert(0, "FirstName LastName")
         self.name_entry.pack()
         # self.name_entry.grid(row=1, column=1)
         # name = name_entry.get()
         # print(name)
-        availability_btn = tk.Button(win1, text="Choose Unavailability")
+        tk.Label(win1, text="Choose Unavailability").pack()
+        availability_btn = tk.Button(win1, text="Click to View")
         availability_btn.config(width=23)
         availability_btn.pack()#grid(row=3, column=1)
         availability_btn['command']= window_calendar
 
+        tk.Label(win1, text="Senior Staff?").pack()
         self.comboSenior = tk.ttk.Combobox(win1, values=["Y", "N"], width=20)
-        self.comboSenior.insert(0,"Senior Staff?")
         self.comboSenior.pack()#.grid(row=2, column=1)
+        
+        tk.Label(win1, text="Choose Event Type").pack()
         self.comboEvent = tk.ttk.Combobox(win1, values=["Art", "Music", "Theater", "Reception", "Dance", "No Preference"], width=20)
-        self.comboEvent.insert(0,"Choose Event Type")
         self.comboEvent.pack()#.grid(row=4, column=1)
 
         self.add_btn = tk.Button(win1, text="Add Employee")
@@ -61,7 +63,7 @@ def window_calendar():
     win_calendar = tk.Toplevel(root)
     win_calendar.geometry("560x450+20+20")
     win_calendar["bg"] = "#B8BBC5"
-    title = tk.Label(win_calendar, text="Unavailability", bg="#B8BBC5",pady=50)
+    title = tk.Label(win_calendar, text="Unavailability", bg="#B8BBC5",pady=50, font=("Helvetica", 16))
     title.grid(row = 0, column = 0)
     calendar = CheckGrid(win_calendar, rows=12, columns=7)
     done_btn = tk.Button(win_calendar, text="Update", command = calendar.get_checked)
@@ -156,23 +158,23 @@ class Window_event():
     def __init__(self):
         win2 = tk.Toplevel(root)
         win2.geometry("920x600+20+20")
-        win2['bg']="#B8BBC5"
-        title = tk.Label(win2, text="Add an Event",pady=50, bg="#B8BBC5")
+        title = tk.Label(win2, text="Add an Event",pady=50, bg="#B8BBC5", font=("Helvetica", 16), width = 920)
         title.pack()#grid(row=0, column=3)
         # fill_list = ["Event Type ","Time Duration (Hour) ","Staff needed "]
         # nrow = 0
         # for i in range(len(fill_list)):
         #     tk.Label(win2, text=fill_list[i], anchor="e", width=20).grid(row=nrow+1, column=0)
         #     nrow += 1
-
+        tk.Label(win2, text="Choose Event Type").pack()
         self.comboEvent = tk.ttk.Combobox(win2, values=["Art", "Music", "Theater", "Reception", "Dance", "No Preference"],width=22)
-        self.comboEvent.insert(0,"Choose Event Type")
         self.comboEvent.pack()#grid(row=1, column=1)
+
+        tk.Label(win2, text="Duration of Event (hr)").pack()
         self.comboDuration = tk.ttk.Combobox(win2, values=[i/2 for i in range(1,11)],width=22)
-        self.comboDuration.insert(0, "Duration of Event")
         self.comboDuration.pack()#grid(row=2, column=1)
+
+        tk.Label(win2, text="# Staff Needed").pack()
         self.comboNumStaff = tk.ttk.Combobox(win2, values=[i for i in range(1,31)],width=22)
-        self.comboNumStaff.insert(0, "# Staff Needed")
         self.comboNumStaff.pack()#grid(row=3, column=1)
 
         self.add_btn = tk.Button(win2, text="Add Event")
@@ -194,20 +196,20 @@ class Window_staff():
     def __init__(self):
         win3 = tk.Toplevel(root)
         win3.geometry("920x600+20+20")
-        win3["bg"] = "#B8BBC5"
-        title = tk.Label(win3, text="Staff an Event", bg="#B8BBC5",pady=50)
+        title = tk.Label(win3, text="Staff an Event", bg="#B8BBC5",pady=50, font=("Helvetica", 16), width = 920)
         title.pack()
 
+        tk.Label(win3, text="Choose Event Type").pack()
         self.combo_event = tk.ttk.Combobox(win3, values=["Art", "Music", "Theater", "Reception", "Dance"], width=20)
-        self.combo_event.insert(0,"Choose Event Type")
         self.combo_event.pack()
 
+        tk.Label(win3, text="Date of the event").pack()
         self.date_entry = tk.Entry(win3, width=22)
         self.date_entry.insert(0, "Format: mm/dd/yyyy")
         self.date_entry.pack()
 
+        tk.Label(win3, text="# Staff Needed").pack()
         self.combo_num = tk.ttk.Combobox(win3, values=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], width=20)
-        self.combo_num.insert(0,"# Staff Needed")
         self.combo_num.pack()
 
         self.add_btn = tk.Button(win3, text="Staff Event")
@@ -229,11 +231,10 @@ class Window_generate():
     def __init__(self):
         win4 = tk.Toplevel(root)
         win4.geometry("920x600+20+20")
-        win4["bg"] = "#B8BBC5"
-        title = tk.Label(win4, text="Generate Weekly Schedule", bg="#B8BBC5",pady=50)
+        title = tk.Label(win4, text="Generate Weekly Schedule", bg="#B8BBC5",pady=50, font=("Helvetica", 16), width=920)
         title.pack()
 
-        tk.Label(win4, text="Type any Date of the Week", bg = "#B8BBC5").pack()
+        tk.Label(win4, text="Type any Date of the Week").pack()
         self.date_entry = tk.Entry(win4)
         self.date_entry.insert(0, "Format: mm/dd/yyyy")
         self.date_entry.pack()
@@ -255,11 +256,10 @@ class Window_export():
     def __init__(self):
         win5 = tk.Toplevel(root)
         win5.geometry("920x600+20+20")
-        win5["bg"] = "#B8BBC5"
-        title = tk.Label(win5, text="Export Weekly Schedule", bg="#B8BBC5",pady=50)
+        title = tk.Label(win5, text="Export Weekly Schedule", bg="#B8BBC5",pady=50, font=("Helvetica", 16), width=920)
         title.pack()
 
-        tk.Label(win5, text="Type any Date of the Week", bg = "#B8BBC5").pack()
+        tk.Label(win5, text="Type any Date of the Week").pack()
         self.date_entry = tk.Entry(win5)
         self.date_entry.insert(0, "Format: mm/dd/yyyy")
         self.date_entry.pack()
@@ -278,11 +278,11 @@ class Window_export():
 #         Root Window
 ###############################
 # create label widge
-welcome_label = tk.Label(text = "Employee Schedule System", pady=50, bg="#B8BBC5")
-blank1 = tk.Label(text = "Employee Schedule System", pady=50, fg="#B8BBC5", bg="#B8BBC5")
-blank2 = tk.Label(text = "Employee Schedule System", pady=50, fg="#B8BBC5", bg="#B8BBC5")
-blank3 = tk.Label(text = "Employee Schedule System", pady=50, fg="#B8BBC5", bg="#B8BBC5")
-blank4 = tk.Label(text = "Employee Schedule System", pady=50, fg="#B8BBC5", bg="#B8BBC5")
+welcome_label = tk.Label(text = "Employee Schedule System", pady=50, bg="#B8BBC5", font=("Helvetica", 16))
+blank1 = tk.Label(text = "Employee Schedule System", pady=50, fg="#B8BBC5", bg="#B8BBC5",font=("Helvetica", 16))
+blank2 = tk.Label(text = "Employee Schedule System", pady=50, fg="#B8BBC5", bg="#B8BBC5",font=("Helvetica", 16))
+blank3 = tk.Label(text = "Employee Schedule System", pady=50, fg="#B8BBC5", bg="#B8BBC5",font=("Helvetica", 16))
+blank4 = tk.Label(text = "Employee Schedule System", pady=50, fg="#B8BBC5", bg="#B8BBC5",font=("Helvetica", 16))
  
 # create buttons
 add_employee_btn = tk.Button(text="Add an Employee", height = 6)
