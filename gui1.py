@@ -48,7 +48,8 @@ class Window_employee():
         senior = self.comboSenior.get()
         event = self.comboEvent.get()
         print(name,senior,event)
-        return name, senior, event
+        userInfo = [name, senior, event]
+        return userInfo
 
 
 def window_calendar():
@@ -171,27 +172,9 @@ class Window_event():
         eventType=self.comboEvent.get()
         duration = self.comboDuration.get()
         numStaff = self.comboNumStaff.get()
-        print(eventType, duration, numStaff)
-        return eventType, duration, numStaff
+        eventInfo = [eventType, duration, numStaff]
+        return eventInfo
 
-# def window_event():
-#     win2 = tk.Toplevel(root)
-#     win2.geometry("920x600+20+20")
-#     win2['bg']="#B8BBC5"
-#     title = tk.Label(win2, text="Add an Event",pady=50, bg="#B8BBC5")
-#     title.grid(row=0, column=3)
-#     fill_list = ["Event Type ","Time Duration (Hour) ","Staff needed "]
-#     nrow = 0
-#     for i in range(len(fill_list)):
-#         tk.Label(win2, text=fill_list[i], anchor="e", width=20).grid(row=nrow+1, column=0)
-#         nrow += 1
-
-#     comboEvent = tk.ttk.Combobox(win2, values=["Art", "Music", "Theater", "Reception", "Dance", "No Preference"],width=22)
-#     comboEvent.grid(row=1, column=1)
-#     comboDuration = tk.ttk.Combobox(win2, values=[i/2 for i in range(1,11)],width=22)
-#     comboDuration.grid(row=2, column=1)
-#     comboNumStaff = tk.ttk.Combobox(win2, values=[i for i in range(1,31)],width=22)
-#     comboNumStaff.grid(row=3, column=1)
 
 # staff event window
 def window_staff():
@@ -233,7 +216,7 @@ blank2.grid(row=0, column=1)
 blank3.grid(row=0, column=3)
 blank4.grid(row=0, column=4)
 welcome_label.grid(row=0, column=2)
-add_employee_btn.grid(row=1, column=0)#, command=win2)
+add_employee_btn.grid(row=1, column=0)
 add_event_btn.grid(row=1, column=1)
 staff_event_btn.grid(row=1, column=2)
 create_schedule_btn.grid(row=1, column=3)
@@ -244,5 +227,7 @@ export_schedule_btn.grid(row=1, column=4)
 add_employee_btn['command']=Window_employee
 add_event_btn['command']=Window_event
 staff_event_btn['command']=window_staff
+
+# print("main loop", userInfo, eventInfo)
 
 root.mainloop()
