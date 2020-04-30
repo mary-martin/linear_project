@@ -2,7 +2,7 @@
 import tkinter as tk
 import tkinter.ttk as ttk
 import collections
-# from data import *
+import data as db
 
 root = tk.Tk()
 root.geometry("1000x600")
@@ -16,20 +16,13 @@ class Window_employee():
         win1.geometry("925x600+20+20")
         title = tk.Label(win1, text="Add an employee",pady=50, bg="#B8BBC5",font=("Helvetica", 16),width = 920)
         title.pack()
-        # fill_list = ["Name: ","Senior Staff: ","Unavailable Hours: ","Preferred event type: "]
-        # nrow = 0
-        # for i in range(len(fill_list)):
-        #     tk.Label(win1, text=fill_list[i], anchor="e", width=20).grid(row=nrow+1, column=0)
-        #     nrow += 1
 
         tk.Label(win1, text="Name").pack()
         self.name_entry = tk.Entry(win1, width = 22)
         self.name_entry.insert(0, "FirstName LastName")
         self.name_entry.pack()
-        # self.name_entry.grid(row=1, column=1)
-        # name = name_entry.get()
-        # print(name)
-        tk.Label(win1, text="Choose Unavailability").pack()
+       
+        tk.Label(win1, text="Choose Availability").pack()
         availability_btn = tk.Button(win1, text="Click to View")
         availability_btn.config(width=23)
         availability_btn.pack()#grid(row=3, column=1)
@@ -48,16 +41,14 @@ class Window_employee():
         self.add_btn.pack()#.grid(row=5, column=1)
 
     def get_input(self):
-        name=self.name_entry.get()
+        name = self.name_entry.get()
         senior = self.comboSenior.get()
         event = self.comboEvent.get()
         print(name,senior,event)
         userInfo = [name, senior, event]
-        return userInfo
 
-def submit_employee(name_field):
-    text = name_field.get()
-    print(text)
+        db.add_employee(name, senior, event)
+        return userInfo
 
 ###############################
 #       Calendar Window
@@ -66,7 +57,7 @@ def window_calendar():
     win_calendar = tk.Toplevel(root)
     win_calendar.geometry("560x450+20+20")
     win_calendar["bg"] = "#B8BBC5"
-    title = tk.Label(win_calendar, text="Unavailability", bg="#B8BBC5",pady=50, font=("Helvetica", 16))
+    title = tk.Label(win_calendar, text="Availability", bg="#B8BBC5",pady=50, font=("Helvetica", 16))
     title.grid(row = 0, column = 0)
     calendar = CheckGrid(win_calendar, rows=12, columns=7)
     done_btn = tk.Button(win_calendar, text="Update", command = calendar.get_checked)
@@ -157,38 +148,53 @@ class CheckGrid(object):
 ###############################
 #          Add Event
 ###############################
+
 class Window_event():
     def __init__(self):
         win2 = tk.Toplevel(root)
         win2.geometry("920x600+20+20")
         title = tk.Label(win2, text="Add an Event",pady=50, bg="#B8BBC5", font=("Helvetica", 16), width = 920)
-        title.pack()#grid(row=0, column=3)
-        # fill_list = ["Event Type ","Time Duration (Hour) ","Staff needed "]
-        # nrow = 0
-        # for i in range(len(fill_list)):
-        #     tk.Label(win2, text=fill_list[i], anchor="e", width=20).grid(row=nrow+1, column=0)
-        #     nrow += 1
+        title.pack()
+
+        tk.Label(win2, text="Enter Event Name").pack()
+        self.nameField = tk.Entry(win2, width=22)
+        self.nameField.pack()
+        
         tk.Label(win2, text="Choose Event Type").pack()
         self.comboEvent = tk.ttk.Combobox(win2, values=["Art", "Music", "Theater", "Reception", "Dance", "No Preference"],width=22)
-        self.comboEvent.pack()#grid(row=1, column=1)
+        self.comboEvent.pack()
+
+        tk.Label(win2, text="Choose Event Date").pack()
+        self.dateField = tk.Entry(win2, width=22)
+        self.dateField.insert(0, "Format: mm/dd/yyyy")
+        self.dateField.pack()
+
+        tk.Label(win2, text="Choose Event Time").pack()
+        self.timeField = tk.Entry(win2, width=22)
+        self.timeField.insert(0, "Format: hh:mm (24 hrs)")
+        self.timeField.pack()
 
         tk.Label(win2, text="Duration of Event (hr)").pack()
         self.comboDuration = tk.ttk.Combobox(win2, values=[i/2 for i in range(1,11)],width=22)
-        self.comboDuration.pack()#grid(row=2, column=1)
+        self.comboDuration.pack()
 
         tk.Label(win2, text="# Staff Needed").pack()
         self.comboNumStaff = tk.ttk.Combobox(win2, values=[i for i in range(1,31)],width=22)
-        self.comboNumStaff.pack()#grid(row=3, column=1)
+        self.comboNumStaff.pack()
 
         self.add_btn = tk.Button(win2, text="Add Event")
         self.add_btn['command']=self.get_input
-        self.add_btn.pack()#grid(row=4, column=1)
+        self.add_btn.pack()
 
     def get_input(self):
-        eventType=self.comboEvent.get()
+        eventName = self.nameField.get()
+        eventType = self.comboEvent.get()
+        date = self.dateField.get()
+        time = self.timeField.get()
         duration = self.comboDuration.get()
         numStaff = self.comboNumStaff.get()
-        eventInfo = [eventType, duration, numStaff]
+        eventInfo = [eventName, date, time, eventType, duration, numStaff]
+        db.add_event(eventName, date, time, duration, eventType, numStaff)
         return eventInfo
 
 
