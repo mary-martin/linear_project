@@ -8,7 +8,7 @@ db = client.Staffing
 
 # server status command and results 
 serverStatusResult=db.command("serverStatus")
-pprint(serverStatusResult)
+# pprint(serverStatusResult)
 
 def add_event(name, date, time, duration, evt_type, num_employees):
      
@@ -65,11 +65,13 @@ def get_employee_list():
     
     employee_list = list(db.Employees.find({}))
     print("Employee list: ", employee_list)
+    return employee_list
 
 def get_event_list():
     
     event_list = list(db.Events.find({}))
     print("Event list: ", event_list)
+    return event_list
 
 def get_employee_count():
    

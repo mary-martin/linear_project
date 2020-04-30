@@ -1,15 +1,15 @@
-from data import *
-from __future__ import print_function
+import data as db
 import sys
 from ortools.constraint_solver import pywrapcp
 
-def schedule_event(event_name):
+def schedule_event():
 
     solver = pywrapcp.Solver("staffing")
-    employees = get_all_employees
-    event = data.get_event(event_name)
-    num_employees = event.num_employees
+    employees = db.get_employee_list()
+    # num_employees = event.num_employees
 
     # constraints on hours worked per week < 20
-
-    #
+    print(employees)
+    # print(event)
+    
+schedule_event()
