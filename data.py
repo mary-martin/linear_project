@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from pymongo import MongoClient
 from pprint import pprint
 
@@ -35,17 +36,21 @@ def add_employee(name, hire_date, can_manage, event_pref, unavailable_hrs):
 
 def change_event_pref(name, pref):
     employee = db.employees.find_one({'name': name})
-    db.employees.update_one({'_id': { eq: employee.get('_id') } }, { set: { 'event_pref': pref } })
+    # db.employees.update_one({'_id': { eq: employee.get('_id') } }, { set: { 'event_pref': pref } })
+    db.employees.update_one({'_id': employee.get('_id') }, { set: { 'event_pref': pref } })
 
 def get_employee_list():
     db=client.employee
-    listing = db.command('usersInfo')
-
-    for document in listing['users']:
-        print(document['user'] +" "+ document['roles'][0]['role'])
-    # employee_list = db.get_collection(client.employee)
-    # print("Employee list: ", employee_list)
+    employee_list = list(db.collection.find({}))
+    print("Employee list: ", employee_list)
 
 def get_event_list():
-    event_list = db.get_collection(client.event)
-    print("Event list: ", event_list)che  
+    db=client.event
+    event_list = list(db.collection.find({}))
+    print("Event list: ", event_list)
+
+def get_employee_count():
+    db=client.employee
+    employee_count = len(list(db.collection.find({})))
+    print("Employee count: ", employee_count)
+    return employee_count
