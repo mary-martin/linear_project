@@ -4,10 +4,6 @@ import tkinter.ttk as ttk
 import collections
 # from data import *
 
-#===========================
-#        FUNCTIONS
-#===========================
-
 root = tk.Tk()
 root.geometry("925x600")
 
@@ -53,13 +49,6 @@ class Window_employee():
         event = self.comboEvent.get()
         print(name,senior,event)
         return name, senior, event
-
-
-    submit = tk.Button(win1, text="Submit") 
-    submit.grid(row=5, column=1) 
-    submit['command'] = submit_employee(name_field)
-
-    win1.mainloop()
    
 
 def submit_employee(name_field):
