@@ -3,6 +3,8 @@ import tkinter as tk
 import tkinter.ttk as ttk
 import collections
 import data as db
+import numpy as np
+# import xlsxwriter
 
 root = tk.Tk()
 root.geometry("1000x600")
@@ -71,7 +73,8 @@ class CheckGrid(object):
         rowrange = range(rows)
         colrange = range(columns)
 
-        self.data = collections.defaultdict(list)
+        # self.data = collections.defaultdict(list)
+        self.data = np.zeros((12,7))
         self.colT = ["Sunday","Monday", "Tuesday", "Wednesday","Thursday","Friday","Saturday"]
         self.rowT = ["6-8 AM","8-10 AM","10-12 PM","12-2 PM","2-4 PM","4-6 PM","6-8 PM","8-10 PM","10-12 AM","12-2 AM","2-4 AM","4-6 AM"]
 
@@ -136,10 +139,11 @@ class CheckGrid(object):
         
         i = 0
         for row in self.grid:
-            # self.data.append([x + 1 for x, b in enumerate(row) if b.var.get()])
+            # self.data.append([1 for x, b in enumerate(row) if b.var.get()])
             for x,b in enumerate(row):
-                if b.var.get() == 1 and self.rowT[i] not in self.data[self.colT[x]]:
-                    self.data[self.colT[x]].append(self.rowT[i])
+                if b.var.get() == 1: #and self.rowT[i] not in self.data[self.colT[x]]:
+                    self.data[i, x] = 1
+                    # self.data[self.colT[x]].append(self.rowT[i])
             i += 1
         print(self.data)
         return self.data
@@ -280,6 +284,8 @@ class Window_export():
     def get_input(self):
         date_typed = self.date_entry.get()
         print(date_typed)
+        event_list = db.get_event_list()
+        print(event_list)
         return date_typed
 
 
