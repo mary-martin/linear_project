@@ -8,7 +8,7 @@ root = tk.Tk()
 root.geometry("925x600")
 
 ###############################
-#        Other Windows
+#     Add Employee Window
 ###############################
 
 # add_employee window
@@ -51,7 +51,9 @@ class Window_employee():
         userInfo = [name, senior, event]
         return userInfo
 
-
+###############################
+#       Calendar Window
+###############################
 def window_calendar():
     win_calendar = tk.Toplevel(root)
     win_calendar.geometry("560x450+20+20")
@@ -62,7 +64,9 @@ def window_calendar():
     done_btn = tk.Button(win_calendar, text="Update", command = calendar.get_checked)
     done_btn.grid(row=13, column=7)
     
-
+###############################
+#Help Class for Calendar Window
+###############################
 class CheckGrid(object):
     ''' A grid of Checkbuttons '''
     def __init__(self, parent, rows, columns):
@@ -143,7 +147,10 @@ class CheckGrid(object):
         print(self.data)
         return self.data
 
-# add_event window 
+
+###############################
+#          Add Event
+###############################
 class Window_event():
     def __init__(self):
         win2 = tk.Toplevel(root)
@@ -175,8 +182,9 @@ class Window_event():
         eventInfo = [eventType, duration, numStaff]
         return eventInfo
 
-
-# staff event window
+###############################
+#      Staff Event Window
+###############################
 def window_staff():
     win3 = tk.Toplevel(root)
     win3.geometry("920x600+20+20")
