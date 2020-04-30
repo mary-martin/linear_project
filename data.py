@@ -12,8 +12,7 @@ def add_event(name, date, time, duration, evt_type, num_employees):
     db=client.event 
     event = {
         'event_name': name,
-        'date': date,
-        'time': time,
+        'date_time': date,
         'duration': duration,
         'type': evt_type, 
         'num_employees': num_employees
@@ -41,3 +40,6 @@ def get_event(event_name):
 
     event = db.events.find_one({'event_name': event_name})
     return event
+
+def set_employee_hrs(hours):
+    db=client.availibility
