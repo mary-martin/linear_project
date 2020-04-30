@@ -10,8 +10,6 @@ root.geometry("925x600")
 ###############################
 #     Add Employee Window
 ###############################
-
-# add_employee window
 class Window_employee():
     def __init__(self):
         win1 = tk.Toplevel(root)
@@ -55,6 +53,7 @@ class Window_employee():
         userInfo = [name, senior, event]
         return userInfo
 
+
 ###############################
 #       Calendar Window
 ###############################
@@ -68,9 +67,7 @@ def window_calendar():
     done_btn = tk.Button(win_calendar, text="Update", command = calendar.get_checked)
     done_btn.grid(row=13, column=7)
     
-###############################
-#Help Class for Calendar Window
-###############################
+# Help Class for Calendar Window
 class CheckGrid(object):
     ''' A grid of Checkbuttons '''
     def __init__(self, parent, rows, columns):
@@ -189,6 +186,7 @@ class Window_event():
         eventInfo = [eventType, duration, numStaff]
         return eventInfo
 
+
 ###############################
 #      Staff Event Window
 ###############################
@@ -253,7 +251,6 @@ class Window_generate():
 ###############################
 #   Schedule Export Window
 ###############################
-
 class Window_export():
     def __init__(self):
         win5 = tk.Toplevel(root)
@@ -277,11 +274,9 @@ class Window_export():
         return date_typed
 
 
-
 ###############################
 #         Root Window
 ###############################
-
 # create label widge
 welcome_label = tk.Label(text = "Employee Schedule System", pady=50, bg="#B8BBC5")
 blank1 = tk.Label(text = "Employee Schedule System", pady=50, fg="#B8BBC5", bg="#B8BBC5")
