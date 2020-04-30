@@ -25,15 +25,19 @@ def add_employee(name, hire_date, can_manage, event_pref, unavailable_hrs, hrs):
     db=client.employee
     employee = {
         'name': name,
-        'hire_date': hire_date,
         'can_manage': can_manage,
         'event_pref': event_pref,
         'unavailable_hrs': unavailable_hrs,
-        'pay_p_hrs': hrs
     }
     result = db.employees.insert_one(employee)
     print('employee added: ', name)
 
 def change_event_pref(name, pref):
+
     employee = db.employees.find_one({'name': name})
     db.employees.update_one({'_id': { eq: employee.get('_id') } }, { set: { 'event_pref': pref } })
+
+def get_event(event_name):
+
+    event = db.events.find_one({'event_name': event_name})
+    return event
