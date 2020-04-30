@@ -4,7 +4,7 @@ import tkinter.ttk as ttk
 import collections
 import data as db
 import numpy as np
-# import xlsxwriter
+import xlsxwriter
 
 root = tk.Tk()
 root.geometry("1000x600")
@@ -272,21 +272,95 @@ class Window_export():
         title = tk.Label(win5, text="Export Weekly Schedule", bg="#B8BBC5",pady=50, font=("Helvetica", 16), width=920)
         title.pack()
 
-        tk.Label(win5, text="Type any Date of the Week").pack()
-        self.date_entry = tk.Entry(win5)
-        self.date_entry.insert(0, "Format: mm/dd/yyyy")
-        self.date_entry.pack()
+        # tk.Label(win5, text="Type any Date of the Week").pack()
+        # self.date_entry = tk.Entry(win5)
+        # self.date_entry.insert(0, "Format: mm/dd/yyyy")
+        # self.date_entry.pack()
 
         self.gen_btn = tk.Button(win5, text="Generate & Export Schedule")
         self.gen_btn['command']=self.get_input
         self.gen_btn.pack()
 
     def get_input(self):
-        date_typed = self.date_entry.get()
-        print(date_typed)
+        # date_typed = self.date_entry.get()
+        # print(date_typed)
         event_list = db.get_event_list()
-        print(event_list)
-        return date_typed
+        staff_list = db.get_employee_list()
+        writexls_event(event_list)
+        writexls_staff(staff_list)
+        return event_list
+
+# Export func
+def writexls_event(export_list):
+    workbook = xlsxwriter.Workbook('schedule.xlsx')
+    worksheet = workbook.add_worksheet()
+
+    # Add a bold format to use to highlight cells.
+    bold = workbook.add_format({'bold': 1})
+
+    # Adjust the column width.
+    worksheet.set_column(1, 1, 15)
+    worksheet.set_column(1, 2, 15)
+    worksheet.set_column(1, 3, 15)
+
+    # Write some data headers.
+    worksheet.write('A1', "ID", bold)
+    worksheet.write('B1', "Event Name", bold)
+    worksheet.write('C1', 'Date', bold)
+    worksheet.write('D1', 'Time', bold)
+    worksheet.write('E1', 'Duration', bold)
+    worksheet.write('F1', 'Type', bold)
+    worksheet.write('G1', '# Staff Needed', bold)
+
+    # Start from the first cell below the headers.
+    row = 1
+    col = 0
+
+    print(export_list)
+    for i in range(len(export_list)):
+        event = export_list[i]
+        worksheet.write_number(row, col, i )  
+        worksheet.write_string(row, col+1, event['event_name'] )  
+        worksheet.write_string(row, col+2, event['date'] )  
+        worksheet.write_string(row, col+3, event['time'] )  
+        worksheet.write_string(row, col+4, event['duration'] ) 
+        worksheet.write_string(row, col+5, event['type'] )   
+        worksheet.write_string(row, col+6, event['num_employees'] )  
+        row += 1
+    workbook.close()
+
+# export func for staff
+def writexls_staff(export_list):
+    workbook = xlsxwriter.Workbook('staff.xlsx')
+    worksheet = workbook.add_worksheet()
+
+    # Add a bold format to use to highlight cells.
+    bold = workbook.add_format({'bold': 1})
+
+    # Adjust the column width.
+    worksheet.set_column(1, 1, 15)
+    worksheet.set_column(1, 2, 15)
+    worksheet.set_column(1, 3, 15)
+
+    # Write some data headers.
+    worksheet.write('A1', "ID", bold)
+    worksheet.write('B1', "Employee Name", bold)
+    worksheet.write('C1', 'Senior Staff?', bold)
+    worksheet.write('D1', 'Event Preference', bold)
+
+    # Start from the first cell below the headers.
+    row = 1
+    col = 0
+
+    print(export_list)
+    for i in range(len(export_list)):
+        staff = export_list[i]
+        worksheet.write_number(row, col, i )  
+        worksheet.write_string(row, col+1, staff['name'] )  
+        worksheet.write_string(row, col+2, "True" if(staff['can_manage']) else "False" )  
+        worksheet.write_string(row, col+3, staff['event_pref'] )   
+        row += 1
+    workbook.close()
 
 
 ###############################
