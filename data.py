@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from pymongo import MongoClient
 from pprint import pprint
 
@@ -43,3 +44,21 @@ def get_event(event_name):
 
 def set_employee_hrs(hours):
     db=client.availibility
+    # db.employees.update_one({'_id': { eq: employee.get('_id') } }, { set: { 'event_pref': pref } })
+    db.employees.update_one({'_id': employee.get('_id') }, { set: { 'event_pref': pref } })
+
+def get_employee_list():
+    db=client.employee
+    employee_list = list(db.collection.find({}))
+    print("Employee list: ", employee_list)
+
+def get_event_list():
+    db=client.event
+    event_list = list(db.collection.find({}))
+    print("Event list: ", event_list)
+
+def get_employee_count():
+    db=client.employee
+    employee_count = len(list(db.collection.find({})))
+    print("Employee count: ", employee_count)
+    return employee_count
