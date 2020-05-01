@@ -78,3 +78,7 @@ def get_employee_count():
     employee_count = len(list(db.Events.find({})))
     print("Employee count: ", employee_count)
     return employee_count
+
+def staff_event(employees. event_name):
+    event = get_event(event_name)
+    db.Events.update_one({'_id': { eq: event.get('_id') } }, { set: { 'staff': employees} })
