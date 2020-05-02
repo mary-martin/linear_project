@@ -40,9 +40,9 @@ def add_employee(name, can_manage, event_pref):
 
     
     
-def set_availability(hrs):
+def set_availability( hrs):
     # update for each day of the week 
-    
+    # employee = db.Employees.find_one({'name': name})
     availability = {
         'employee_id': "",
         'Sunday': hrs[:, 0].tolist(),
@@ -53,6 +53,7 @@ def set_availability(hrs):
         'Friday': hrs[:, 5].tolist(),
         'Saturday': hrs[:, 6].tolist()
     }
+    # db.employees.update_one({'name': employee.get('name')}, { '$set': { 'unavailability': availability } })
     db.Available_hours.insert_one(availability)
     print("Employee hours have been set.")
     print(availability)

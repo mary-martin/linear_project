@@ -25,12 +25,6 @@ class Window_employee():
         self.name_entry = tk.Entry(win1, width = 22)
         self.name_entry.insert(0, "FirstName LastName")
         self.name_entry.pack()
-       
-        tk.Label(win1, text="Choose Availability").pack()
-        availability_btn = tk.Button(win1, text="Click to View")
-        availability_btn.config(width=23)
-        availability_btn.pack()#grid(row=3, column=1)
-        availability_btn['command']= window_calendar
 
         tk.Label(win1, text="Senior Staff?").pack()
         self.comboSenior = tk.ttk.Combobox(win1, values=["Y", "N"], width=20)
@@ -41,8 +35,18 @@ class Window_employee():
         self.comboEvent.pack()#.grid(row=4, column=1)
 
         self.add_btn = tk.Button(win1, text="Add Employee")
-        self.add_btn['command']=self.get_input
+        self.name = self.add_btn['command']=self.get_input
         self.add_btn.pack()#.grid(row=5, column=1)
+
+        tk.Label(win1, text="Choose Availability").pack()
+        availability_btn = tk.Button(win1, text="Click to View")
+        availability_btn.config(width=23)
+        availability_btn.pack()#grid(row=3, column=1)
+        availability_btn['command']= self.window_calendar
+
+        self.up = tk.Button(win1, text="Update")
+        self.up['command']=self.get_input2
+        self.up.pack()#.grid(row=5, column=1)
 
     def get_input(self):
         name = self.name_entry.get()
@@ -50,30 +54,39 @@ class Window_employee():
         event = self.comboEvent.get()
 
         db.add_employee(name, senior, event)
+        # db.find_avail(name)
+        return name
+        # self.win1.destroy()
+    
+    def get_input2(self):
+        name = self.name_entry.get()
         db.find_avail(name)
-        
         self.win1.destroy()
+        # return name
 
 ###############################
 #       Calendar Window
 ###############################
-def window_calendar():
-    win_calendar = tk.Toplevel(root)
-    win_calendar.geometry("560x450+20+20")
-    win_calendar["bg"] = "#B8BBC5"
-    title = tk.Label(win_calendar, text="Availability", bg="#B8BBC5",pady=50, font=("Helvetica", 16))
-    title.grid(row = 0, column = 0)
-    calendar = CheckGrid(win_calendar, rows=12, columns=7)
-    done_btn = tk.Button(win_calendar, text="Update", command = calendar.get_checked)
-    done_btn.grid(row=13, column=7)
+    def window_calendar(self):
+        # self.name = name
+        win_calendar = tk.Toplevel(self.win1)
+        win_calendar.geometry("560x450-20-20")
+        win_calendar["bg"] = "#B8BBC5"
+        title = tk.Label(win_calendar, text="Availability", bg="#B8BBC5",pady=50, font=("Helvetica", 16))
+        title.grid(row = 0, column = 0)
+        # calendar = CheckGrid(win_calendar, self.name, rows=12, columns=7)
+        calendar = CheckGrid(win_calendar, rows=12, columns=7)
+        done_btn = tk.Button(win_calendar, text="Update", command = calendar.get_checked)
+        done_btn.grid(row=13, column=7)
     
 # Help Class for Calendar Window
 class CheckGrid(object):
     ''' A grid of Checkbuttons '''
-    def __init__(self, parent, rows, columns ):
+    def __init__(self, parent,rows, columns):
         self.parent = parent
         rowrange = range(rows)
         colrange = range(columns)
+        # self.name = name
 
         # self.data = collections.defaultdict(list)
         self.data = np.zeros((12,7))
