@@ -5,6 +5,7 @@ import collections
 import data as db
 import numpy as np
 import xlsxwriter
+import scheduling as schedule
 
 root = tk.Tk()
 root.geometry("1000x600")
@@ -15,6 +16,7 @@ root.geometry("1000x600")
 class Window_employee():
     def __init__(self):
         win1 = tk.Toplevel(root)
+        self.win1 = win1
         win1.geometry("925x600+20+20")
         title = tk.Label(win1, text="Add an employee",pady=50, bg="#B8BBC5",font=("Helvetica", 16),width = 920)
         title.pack()
@@ -23,55 +25,68 @@ class Window_employee():
         self.name_entry = tk.Entry(win1, width = 22)
         self.name_entry.insert(0, "FirstName LastName")
         self.name_entry.pack()
-       
-        tk.Label(win1, text="Choose Availability").pack()
-        availability_btn = tk.Button(win1, text="Click to View")
-        availability_btn.config(width=23)
-        availability_btn.pack()#grid(row=3, column=1)
-        availability_btn['command']= window_calendar
 
         tk.Label(win1, text="Senior Staff?").pack()
         self.comboSenior = tk.ttk.Combobox(win1, values=["Y", "N"], width=20)
         self.comboSenior.pack()#.grid(row=2, column=1)
         
-        tk.Label(win1, text="Choose Event Type").pack()
+        tk.Label(win1, text="Choose Event Type Preference").pack()
         self.comboEvent = tk.ttk.Combobox(win1, values=["Art", "Music", "Theater", "Reception", "Dance", "No Preference"], width=20)
         self.comboEvent.pack()#.grid(row=4, column=1)
 
         self.add_btn = tk.Button(win1, text="Add Employee")
-        self.add_btn['command']=self.get_input
+        self.name = self.add_btn['command']=self.get_input
         self.add_btn.pack()#.grid(row=5, column=1)
+
+        tk.Label(win1, text="Choose Availability").pack()
+        availability_btn = tk.Button(win1, text="Click to View")
+        availability_btn.config(width=23)
+        availability_btn.pack()#grid(row=3, column=1)
+        availability_btn['command']= self.window_calendar
+
+        self.up = tk.Button(win1, text="Update")
+        self.up['command']=self.get_input2
+        self.up.pack()#.grid(row=5, column=1)
 
     def get_input(self):
         name = self.name_entry.get()
         senior = self.comboSenior.get()
         event = self.comboEvent.get()
-        print(name,senior,event)
-        userInfo = [name, senior, event]
 
         db.add_employee(name, senior, event)
-        return userInfo
+        # db.find_avail(name)
+        return name
+        # self.win1.destroy()
+    
+    def get_input2(self):
+        name = self.name_entry.get()
+        db.find_avail(name)
+        self.win1.destroy()
+        # return name
 
 ###############################
 #       Calendar Window
 ###############################
-def window_calendar():
-    win_calendar = tk.Toplevel(root)
-    win_calendar.geometry("560x450+20+20")
-    win_calendar["bg"] = "#B8BBC5"
-    title = tk.Label(win_calendar, text="Availability", bg="#B8BBC5",pady=50, font=("Helvetica", 16))
-    title.grid(row = 0, column = 0)
-    calendar = CheckGrid(win_calendar, rows=12, columns=7)
-    done_btn = tk.Button(win_calendar, text="Update", command = calendar.get_checked)
-    done_btn.grid(row=13, column=7)
+    def window_calendar(self):
+        # self.name = name
+        win_calendar = tk.Toplevel(self.win1)
+        win_calendar.geometry("560x450-20-20")
+        win_calendar["bg"] = "#B8BBC5"
+        title = tk.Label(win_calendar, text="Availability", bg="#B8BBC5",pady=50, font=("Helvetica", 16))
+        title.grid(row = 0, column = 0)
+        # calendar = CheckGrid(win_calendar, self.name, rows=12, columns=7)
+        calendar = CheckGrid(win_calendar, rows=12, columns=7)
+        done_btn = tk.Button(win_calendar, text="Update", command = calendar.get_checked)
+        done_btn.grid(row=13, column=7)
     
 # Help Class for Calendar Window
 class CheckGrid(object):
     ''' A grid of Checkbuttons '''
-    def __init__(self, parent, rows, columns):
-
+    def __init__(self, parent,rows, columns):
+        self.parent = parent
         rowrange = range(rows)
         colrange = range(columns)
+        # self.name = name
 
         # self.data = collections.defaultdict(list)
         self.data = np.zeros((12,7))
@@ -130,7 +145,7 @@ class CheckGrid(object):
                 for b in row:
                     if b.var.get() == 0:
                         b.config(state=tk.NORMAL)
-        self.get_checked()
+        # self.get_checked()
 
         #print y, x, state, self.rowstate[y] 
 
@@ -145,8 +160,11 @@ class CheckGrid(object):
                     self.data[i, x] = 1
                     # self.data[self.colT[x]].append(self.rowT[i])
             i += 1
-        print(self.data)
-        return self.data
+        hrs = self.data
+        db.set_availability(hrs)
+        print(hrs)
+        self.parent.destroy()
+
 
 
 ###############################
@@ -252,14 +270,12 @@ class Window_generate():
         self.date_entry.insert(0, "Format: mm/dd/yyyy")
         self.date_entry.pack()
 
-        self.gen_btn = tk.Button(win4, text="Generate Schedule")
+        self.gen_btn = tk.Button(win4, text="Generate Schedule", command=self.get_input)
         self.gen_btn['command']=self.get_input
         self.gen_btn.pack()
 
     def get_input(self):
-        date_typed = self.date_entry.get()
-        print(date_typed)
-        return date_typed
+        schedule.schedule_week()
 
 
 ###############################
